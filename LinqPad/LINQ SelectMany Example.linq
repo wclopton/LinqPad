@@ -1,6 +1,7 @@
 <Query Kind="Statements" />
 
 //http://www.codethinked.com/a-visual-look-at-the-linq-selectmany-operator
+//http://community.bartdesmet.net/blogs/bart/archive/2008/08/30/c-3-0-query-expression-translation-cheat-sheet.aspx
   var customers = new Customer[]
   {
     new Customer() { Id=1, Name ="A"},
@@ -104,4 +105,3 @@ public class Customer
     public int CustomerId { get; set; }
     public string Description { get; set; }
   //}
-  
