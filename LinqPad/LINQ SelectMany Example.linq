@@ -18,15 +18,15 @@
   
   var orders = new Order[]
   {
-    new Order { Id=1, CustomerId=1, Description="Order 1"},
-    new Order { Id=2, CustomerId=1, Description="Order 2"},
-    new Order { Id=3, CustomerId=1, Description="Order 3"},
-    new Order { Id=4, CustomerId=1, Description="Order 4"},
-    new Order { Id=5, CustomerId=2, Description="Order 5"},
-    new Order { Id=6, CustomerId=2, Description="Order 6"},
-    new Order { Id=7, CustomerId=3, Description="Order 7"},
-    new Order { Id=8, CustomerId=3, Description="Order 8"},
-    new Order { Id=9, CustomerId=3, Description="Order 9"}
+    new Order { Id=1, CustomerId=1, Description="Order 1", Total =330.00, OrderDate= new DateTime(2015, 5, 1)},
+    new Order { Id=2, CustomerId=1, Description="Order 2", Total =471.20, OrderDate= new DateTime(2015, 5, 2)},
+    new Order { Id=3, CustomerId=1, Description="Order 3", Total =88.80, OrderDate= new DateTime(2015, 5, 3)},
+    new Order { Id=4, CustomerId=1, Description="Order 4", Total =479.75, OrderDate= new DateTime(2015, 5, 4)},
+    new Order { Id=5, CustomerId=2, Description="Order 5", Total =320.00, OrderDate= new DateTime(2015, 5, 4)},
+    new Order { Id=6, CustomerId=2, Description="Order 6", Total =403.20, OrderDate= new DateTime(2015, 5, 5)},
+    new Order { Id=7, CustomerId=3, Description="Order 7", Total =375.50, OrderDate= new DateTime(2015, 5, 5)},
+    new Order { Id=8, CustomerId=3, Description="Order 8", Total =480.00, OrderDate= new DateTime(2015, 5, 6)},
+    new Order { Id=9, CustomerId=3, Description="Order 9", Total =407.70, OrderDate= new DateTime(2015, 5, 7)}
   };
 
 //this is a cross-join (cartesian product of two sets).  There is no explicit join operator for it.
@@ -77,7 +77,20 @@ var newList=names.SelectMany(
     (y, z) => { return y + z + " test "; });
     Console.WriteLine(newList);
 
+//Linq15() uses a compound from clause to select all orders where the order total is less than 500.00.
+var orders15 = customers.SelectMany(c=>orders
+	.Where(o=> o.Total < 400.00D && o.CustomerId == c.Id),
+	(c, o) => new { CustomerId = c.Id, OrderId = o.Id, o.Total });
+	Console.WriteLine(orders15);
 
+//Linq18() uses a compound from clause to select all orders where the order total is less than 500.00.
+DateTime cutoffDate = new DateTime(2015, 5, 4);
+var orders18 = customers.SelectMany(c=>orders
+	.Where(o=> o.OrderDate >=cutoffDate && o.CustomerId == c.Id),
+	(c, o) => new { CustomerId = c.Id, OrderId = o.Id, o.Total, o.OrderDate });
+	Console.WriteLine(orders18);
+	
+	
 }// close bracket to end the method block
 
 public class Customer
@@ -91,6 +104,8 @@ public class Customer
     public int Id { get; set; }
     public int CustomerId { get; set; }
     public string Description { get; set; }
+	public double Total { get; set; }
+	public DateTime OrderDate {get;set;}
   }
   
   class CustomerWithOrders
