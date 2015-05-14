@@ -89,7 +89,11 @@ var orders18 = customers.SelectMany(c=>orders
 	.Where(o=> o.OrderDate >=cutoffDate && o.CustomerId == c.Id),
 	(c, o) => new { CustomerId = c.Id, OrderId = o.Id, o.Total, o.OrderDate });
 	Console.WriteLine(orders18);
-	
+
+//Linq42 group words by their first letter.
+var numberGroups42 = orders.GroupBy(w=>w.OrderDate).Select(w=> new{ OrderDate = w.Key, Words = w});
+Console.WriteLine("Group words by OrderDate.");
+Console.WriteLine(numberGroups42);
 	
 }// close bracket to end the method block
 

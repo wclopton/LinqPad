@@ -9,7 +9,8 @@ void Main()
 public void Linq1() 
 { 
 string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-string[] words = { "cherry", "apple", "blueberry" }; 
+string[] words1 = { "cherry", "apple", "blueberry" }; 
+string[] words2 = { "blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese" }; 
 //add 1 to returned result
 int?[] numbers1 = { null, 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 }; 
 int[] numbers2 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -81,7 +82,7 @@ Console.WriteLine(firstNumbersLessThan6);
 
 //Linq29
 //var sortedWords = from w in words orderby w.Length desending select w;
-var sortedWords = words.OrderByDescending(w=>w.Length);
+var sortedWords = words1.OrderByDescending(w=>w.Length);
 Console.WriteLine("orderby to sort a list of words by length.");
 Console.WriteLine(sortedWords);
 
@@ -90,6 +91,16 @@ Console.WriteLine(sortedWords);
 var reversedIDigits = digits.Where(d=>d[1].ToString()=="i").Reverse();
 Console.WriteLine("REVERSE() from the order in the original array.");
 Console.WriteLine(reversedIDigits);
+
+//Linq40 Group By
+var numberGroups40 = numbers3.GroupBy(g=>g %5 ).Select(g=> new{ Remainder = g.Key, Numbers = g});
+Console.WriteLine("Group By numbers by their remainder when divided by 5.");
+Console.WriteLine(numberGroups40);
+
+//Linq41 group words by their first letter.
+var numberGroups41 = words2.GroupBy(w=>w[0]).Select(w=> new{ FirstLetter = w.Key, Words = w});
+Console.WriteLine("Group words by their first letter.");
+Console.WriteLine(numberGroups41);
 
 
 }
