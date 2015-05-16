@@ -9,18 +9,19 @@ var pCorpDataList1 = new List<PCorpObject>(){
 //Console.WriteLine(pCorpDataList1);
 
 var pCorpDataList2 = new List<PCorpData>() {
-	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA11"},
-	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA12"},
-	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA13"},
-	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA14"},
-	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "CANYONLANDS", Circuit = "CAN01"},
-	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "CANYONLANDS", Circuit = "CAN02"},
-	new PCorpData{ControlCenter = "SCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW01"},
-	new PCorpData{ControlCenter = "SCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW02"},
 	new PCorpData{ControlCenter = "WCC", District = "CASPER 564", Substation = "BUFFALO", Circuit = "BUF11"},
 	new PCorpData{ControlCenter = "WCC", District = "CASPER 564", Substation = "BUFFALO", Circuit = "BUF12"},
 	new PCorpData{ControlCenter = "WCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW03"},
-	new PCorpData{ControlCenter = "WCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW04"}
+	new PCorpData{ControlCenter = "WCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW04"},
+	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA14"},
+	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA12"},
+	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA13"},
+	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "MOAB CITY", Circuit = "MOA11"},
+	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "CANYONLANDS", Circuit = "CAN02"},
+	new PCorpData{ControlCenter = "SCC", District = "MOAB", Substation = "CANYONLANDS", Circuit = "CAN01"},
+	new PCorpData{ControlCenter = "SCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW01"},
+	new PCorpData{ControlCenter = "SCC", District = "CLEAR WATER", Substation = "CLEAR WATER", Circuit = "CLW02"}
+
 }.AsQueryable();
 //Console.WriteLine(pCorpDataList2);
 
@@ -34,15 +35,16 @@ var pCorpGroupBy = pCorpDataList2.GroupBy(cc=>cc.ControlCenter)
 				.Select(ss=>
 					new PCorpObject { Name=ss.Key, Type= PCorpType.Substation, Childs = 
 					ss.GroupBy(c=>c.Circuit)
+					
 					.Select(
 						c=>new PCorpObject {Name=c.Key, Type=PCorpType.Circuit}
-						).AsQueryable()
+						).OrderBy(c => c.Name).AsQueryable()
 						}
-					).AsQueryable()
+					).OrderBy(ss => ss.Name).AsQueryable()
 				}
-			).AsQueryable()
+			).OrderBy(d => d.Name).AsQueryable()
 		}
-	);
+	).OrderBy(cc => cc.Name);
 pCorpGroupBy.Dump();
 
 //var pCorpList = pCorpDataList2
